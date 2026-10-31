@@ -149,9 +149,9 @@ cs-202-15.lab.          45      IN      NS      ns.cs-202-15.lab.
 ```
 | Сервер | status | flags | ANSWER | AUTHORITY | ADDITIONAL |
 |---|---|---|---|---|---|
-| 10.53.0.2 | | | | | |
-| 10.53.0.3 | | | | | |
-| 10.53.1.1 | | | | | |
+| 10.53.0.2 |NOERROR |qr |0 |1 (`lab. NS ns1.nic.lab`) |2 (EDNS + `ns1.nic.lab A 10.53.0.3`) |
+| 10.53.0.3 |NOERROR |qr |0 |1 (`cs-202-15.lab. NS ns.cs-202-15.lab`) |2 (EDNS + `ns.cs-202-15.lab A 10.53.1.1`) |
+| 10.53.1.1 |NOERROR |qr |1 (`ns.cs-202-15.lab. A 10.53.1.1`) |1 (`cs-202-15.lab. NS ns.cs-202-15.lab`) |1 (EDNS) |
 Вивід `dig ns.sNN.lab A +trace`:
 ```text
 ```
