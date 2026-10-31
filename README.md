@@ -192,24 +192,306 @@ zone cs-202-15.lab/IN: loaded serial 2026103102
 OK
 zone reload queued
 ```
+Виконання у терміналі шести запитів до мого сервера (10.53.1.1)
 <!-- Шість запитів до 10.53.1.1 з +norec, по одному на кожен рядок таблиці картки. -->
+```
+root@ns-cs-202-15:/# dig @10.53.1.1 www.cs-202-15.lab A +norec
+
+; <<>> DiG 9.18.39-0ubuntu0.24.04.8-Ubuntu <<>> @10.53.1.1 www.cs-202-15.lab A +norec
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 14463
+;; flags: qr aa; QUERY: 1, ANSWER: 1, AUTHORITY: 1, ADDITIONAL: 2
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: 065302381b436b0e010000006ae60565a2fa56bcc17db143 (good)
+;; QUESTION SECTION:
+;www.cs-202-15.lab.             IN      A
+
+;; ANSWER SECTION:
+www.cs-202-15.lab.      45      IN      A       10.53.0.80
+
+;; AUTHORITY SECTION:
+cs-202-15.lab.          45      IN      NS      ns.cs-202-15.lab.
+
+;; ADDITIONAL SECTION:
+ns.cs-202-15.lab.       45      IN      A       10.53.1.1
+
+;; Query time: 1 msec
+;; SERVER: 10.53.1.1#53(10.53.1.1) (UDP)
+;; WHEN: Sat Oct 31 15:12:37 UTC 2026
+;; MSG SIZE  rcvd: 123
+
+root@ns-cs-202-15:/# dig @10.53.1.1 wiki.cs-202-15.lab CNAME +norec
+
+; <<>> DiG 9.18.39-0ubuntu0.24.04.8-Ubuntu <<>> @10.53.1.1 wiki.cs-202-15.lab CNAME +norec
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 9456
+;; flags: qr aa; QUERY: 1, ANSWER: 1, AUTHORITY: 1, ADDITIONAL: 2
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: 7deca0088be66160010000006ae6056f541f4d75f85c12b8 (good)
+;; QUESTION SECTION:
+;wiki.cs-202-15.lab.            IN      CNAME
+
+;; ANSWER SECTION:
+wiki.cs-202-15.lab.     45      IN      CNAME   www.cs-202-15.lab.
+
+;; AUTHORITY SECTION:
+cs-202-15.lab.          45      IN      NS      ns.cs-202-15.lab.
+
+;; ADDITIONAL SECTION:
+ns.cs-202-15.lab.       45      IN      A       10.53.1.1
+
+;; Query time: 0 msec
+;; SERVER: 10.53.1.1#53(10.53.1.1) (UDP)
+;; WHEN: Sat Oct 31 15:12:47 UTC 2026
+;; MSG SIZE  rcvd: 126
+
+root@ns-cs-202-15:/# dig @10.53.1.1 mail.cs-202-15.lab A +norec
+
+; <<>> DiG 9.18.39-0ubuntu0.24.04.8-Ubuntu <<>> @10.53.1.1 mail.cs-202-15.lab A +norec
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 49782
+;; flags: qr aa; QUERY: 1, ANSWER: 1, AUTHORITY: 1, ADDITIONAL: 2
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: 68eef17ecd2a5b92010000006ae6057b569b573106f441cf (good)
+;; QUESTION SECTION:
+;mail.cs-202-15.lab.            IN      A
+
+;; ANSWER SECTION:
+mail.cs-202-15.lab.     45      IN      A       10.53.0.80
+
+;; AUTHORITY SECTION:
+cs-202-15.lab.          45      IN      NS      ns.cs-202-15.lab.
+
+;; ADDITIONAL SECTION:
+ns.cs-202-15.lab.       45      IN      A       10.53.1.1
+
+;; Query time: 0 msec
+;; SERVER: 10.53.1.1#53(10.53.1.1) (UDP)
+;; WHEN: Sat Oct 31 15:12:59 UTC 2026
+;; MSG SIZE  rcvd: 124
+
+root@ns-cs-202-15:/# dig @10.53.1.1 cs-202-15.lab MX +norec
+
+; <<>> DiG 9.18.39-0ubuntu0.24.04.8-Ubuntu <<>> @10.53.1.1 cs-202-15.lab MX +norec
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 24882
+;; flags: qr aa; QUERY: 1, ANSWER: 1, AUTHORITY: 1, ADDITIONAL: 3
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: 4046e3c199ee5660010000006ae60587c7a18fcb3ff17004 (good)
+;; QUESTION SECTION:
+;cs-202-15.lab.                 IN      MX
+
+;; ANSWER SECTION:
+cs-202-15.lab.          45      IN      MX      35 mail.cs-202-15.lab.
+
+;; AUTHORITY SECTION:
+cs-202-15.lab.          45      IN      NS      ns.cs-202-15.lab.
+
+;; ADDITIONAL SECTION:
+mail.cs-202-15.lab.     45      IN      A       10.53.0.80
+ns.cs-202-15.lab.       45      IN      A       10.53.1.1
+
+;; Query time: 0 msec
+;; SERVER: 10.53.1.1#53(10.53.1.1) (UDP)
+;; WHEN: Sat Oct 31 15:13:11 UTC 2026
+;; MSG SIZE  rcvd: 140
+
+root@ns-cs-202-15:/# dig @10.53.1.1 cs-202-15.lab TXT +norec
+
+; <<>> DiG 9.18.39-0ubuntu0.24.04.8-Ubuntu <<>> @10.53.1.1 cs-202-15.lab TXT +norec
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 41186
+;; flags: qr aa; QUERY: 1, ANSWER: 1, AUTHORITY: 1, ADDITIONAL: 2
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: 27e27df925a36128010000006ae6059348cf3fe4891d750e (good)
+;; QUESTION SECTION:
+;cs-202-15.lab.                 IN      TXT
+
+;; ANSWER SECTION:
+cs-202-15.lab.          45      IN      TXT     "lab-token=c5ca5d00"
+
+;; AUTHORITY SECTION:
+cs-202-15.lab.          45      IN      NS      ns.cs-202-15.lab.
+
+;; ADDITIONAL SECTION:
+ns.cs-202-15.lab.       45      IN      A       10.53.1.1
+
+;; Query time: 0 msec
+;; SERVER: 10.53.1.1#53(10.53.1.1) (UDP)
+;; WHEN: Sat Oct 31 15:13:23 UTC 2026
+;; MSG SIZE  rcvd: 134
+
+root@ns-cs-202-15:/# dig @10.53.1.1 lab.cs-202-15.lab A +norec
+
+; <<>> DiG 9.18.39-0ubuntu0.24.04.8-Ubuntu <<>> @10.53.1.1 lab.cs-202-15.lab A +norec
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 26706
+;; flags: qr aa; QUERY: 1, ANSWER: 1, AUTHORITY: 1, ADDITIONAL: 2
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: f2e2a5d45be50d61010000006ae6059e0572f4f55cbc43d1 (good)
+;; QUESTION SECTION:
+;lab.cs-202-15.lab.             IN      A
+
+;; ANSWER SECTION:
+lab.cs-202-15.lab.      35      IN      A       10.53.0.81
+
+;; AUTHORITY SECTION:
+cs-202-15.lab.          45      IN      NS      ns.cs-202-15.lab.
+
+;; ADDITIONAL SECTION:
+ns.cs-202-15.lab.       45      IN      A       10.53.1.1
+
+;; Query time: 0 msec
+;; SERVER: 10.53.1.1#53(10.53.1.1) (UDP)
+;; WHEN: Sat Oct 31 15:13:34 UTC 2026
+;; MSG SIZE  rcvd: 123
+
+```
+
 | Запис | status | Прапорець `aa` | Значення в ANSWER | TTL | Відповідає картці (так/ні) |
 |---|---|---|---|---|---|
-| `www` A | | | | | |
-| псевдонім CNAME | | | | | |
-| `mail` A | | | | | |
-| `@` MX | | | | | |
-| `@` TXT | | | | | |
-| другий хост A | | | | | |
+| `www` A |NOERROR |aa |10.53.0.80 |45 |так |
+| псевдонім CNAME |NOERROR |aa |www.cs-202-15.lab. |45 |так |
+| `mail` A |NOERROR |aa |10.53.0.80 |45 |так |
+| `@` MX |NOERROR |aa |35 mail.cs-202-15.lab. |45 |так |
+| `@` TXT |NOERROR |aa |"lab-token=c5ca5d00" |45 |так |
+| другий хост A(`lab`) |NOERROR |aa |10.53.0.81 |45 |так |
 Порівняння відповідей резолвера та власного сервера:
-```text
+```
+root@ns-cs-202-15:/# dig wiki.cs-202-15.lab
+
+; <<>> DiG 9.18.39-0ubuntu0.24.04.8-Ubuntu <<>> wiki.cs-202-15.lab
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 37824
+;; flags: qr rd ra; QUERY: 1, ANSWER: 2, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+;; QUESTION SECTION:
+;wiki.cs-202-15.lab.            IN      A
+
+;; ANSWER SECTION:
+wiki.cs-202-15.lab.     45      IN      CNAME   www.cs-202-15.lab.
+www.cs-202-15.lab.      45      IN      A       10.53.0.80
+
+;; Query time: 142 msec
+;; SERVER: 10.53.0.53#53(10.53.0.53) (UDP)
+;; WHEN: Sat Oct 31 15:22:34 UTC 2026
+;; MSG SIZE  rcvd: 81
+
+root@ns-cs-202-15:/# dig @10.53.1.1 wiki.cs-202-15.lab +norec
+
+; <<>> DiG 9.18.39-0ubuntu0.24.04.8-Ubuntu <<>> @10.53.1.1 wiki.cs-202-15.lab +norec
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 52889
+;; flags: qr aa; QUERY: 1, ANSWER: 2, AUTHORITY: 1, ADDITIONAL: 2
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: 28e9eb5606eb4601010000006ae607c584ab47f901e2a53b (good)
+;; QUESTION SECTION:
+;wiki.cs-202-15.lab.            IN      A
+
+;; ANSWER SECTION:
+wiki.cs-202-15.lab.     45      IN      CNAME   www.cs-202-15.lab.
+www.cs-202-15.lab.      45      IN      A       10.53.0.80
+
+;; AUTHORITY SECTION:
+cs-202-15.lab.          45      IN      NS      ns.cs-202-15.lab.
+
+;; ADDITIONAL SECTION:
+ns.cs-202-15.lab.       45      IN      A       10.53.1.1
+
+;; Query time: 0 msec
+;; SERVER: 10.53.1.1#53(10.53.1.1) (UDP)
+;; WHEN: Sat Oct 31 15:22:45 UTC 2026
+;; MSG SIZE  rcvd: 142
+
+root@ns-cs-202-15:/# dig cs-202-15.lab MX
+
+; <<>> DiG 9.18.39-0ubuntu0.24.04.8-Ubuntu <<>> cs-202-15.lab MX
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 49160
+;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+;; QUESTION SECTION:
+;cs-202-15.lab.                 IN      MX
+
+;; ANSWER SECTION:
+cs-202-15.lab.          45      IN      MX      35 mail.cs-202-15.lab.
+
+;; Query time: 0 msec
+;; SERVER: 10.53.0.53#53(10.53.0.53) (UDP)
+;; WHEN: Sat Oct 31 15:22:53 UTC 2026
+;; MSG SIZE  rcvd: 63
+
+root@ns-cs-202-15:/# dig @10.53.1.1 cs-202-15.lab MX +norec
+
+; <<>> DiG 9.18.39-0ubuntu0.24.04.8-Ubuntu <<>> @10.53.1.1 cs-202-15.lab MX +norec
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 34373
+;; flags: qr aa; QUERY: 1, ANSWER: 1, AUTHORITY: 1, ADDITIONAL: 3
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: 1c4ea837b1aece55010000006ae607d566b3fba682a3a32f (good)
+;; QUESTION SECTION:
+;cs-202-15.lab.                 IN      MX
+
+;; ANSWER SECTION:
+cs-202-15.lab.          45      IN      MX      35 mail.cs-202-15.lab.
+
+;; AUTHORITY SECTION:
+cs-202-15.lab.          45      IN      NS      ns.cs-202-15.lab.
+
+;; ADDITIONAL SECTION:
+mail.cs-202-15.lab.     45      IN      A       10.53.0.80
+ns.cs-202-15.lab.       45      IN      A       10.53.1.1
+
+;; Query time: 0 msec
+;; SERVER: 10.53.1.1#53(10.53.1.1) (UDP)
+;; WHEN: Sat Oct 31 15:23:01 UTC 2026
+;; MSG SIZE  rcvd: 140
+
 ```
 | Запит | flags | ANSWER (кількість, типи) | AUTHORITY (кількість, типи) | ADDITIONAL (кількість, типи) | TTL |
 |---|---|---|---|---|---|
-| псевдонім через resolver-a | | | | | |
-| псевдонім через 10.53.1.1 | | | | | |
-| MX через resolver-a | | | | | |
-| MX через 10.53.1.1 | | | | | |
+| псевдонім через resolver-a(`dig wiki.cs-202-15.lab`) |qr rd ra |2 (`CNAME`,`A`) |0 |1 (EDNS) |45 |
+| псевдонім через 10.53.1.1(`+norec`) |qr aa |2 (`CNAME`, `A`) |1 (`NS`) |2 (`A` для ns, EDNS) |45 |
+| MX через resolver-a(`dig cs-202-15.lab MX`) |qr rd ra |1 (`MX`) |0 |1 (EDNS) |45 |
+| MX через 10.53.1.1(`+norec`) |qr aa |1 (`MX`) |1 (`NS`) |3 (`A` для mail, `A` для ns, EDNS) |45 |
 Пояснення відмінностей:
 Повідомлення `zone-check` після тимчасового додавання `@ IN CNAME www`:
 ```text
