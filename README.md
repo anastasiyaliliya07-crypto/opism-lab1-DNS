@@ -67,7 +67,84 @@ URI 4: етап, на якому запит не вдається (пошук і
 | `--path-as-is` | | |
 Розбіжності між URI та тим, що отримав сервер, і їх пояснення:
 ## Завдання 2. Проходження ієрархії вручну
-```text
+```root@ns-cs-202-15:/# dig @10.53.0.2 ns.cs-202-15.lab A +norec
+
+; <<>> DiG 9.18.39-0ubuntu0.24.04.8-Ubuntu <<>> @10.53.0.2 ns.cs-202-15.lab A +norec
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 18023
+;; flags: qr; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 2
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: f5694899c48a5d2b010000006ae5f3407fa3e1d2dd922d04 (good)
+;; QUESTION SECTION:
+;ns.cs-202-15.lab.              IN      A
+
+;; AUTHORITY SECTION:
+lab.                    172800  IN      NS      ns1.nic.lab.
+
+;; ADDITIONAL SECTION:
+ns1.nic.lab.            172800  IN      A       10.53.0.3
+
+;; Query time: 79 msec
+;; SERVER: 10.53.0.2#53(10.53.0.2) (UDP)
+;; WHEN: Sat Oct 31 13:55:12 UTC 2026
+;; MSG SIZE  rcvd: 117
+
+root@ns-cs-202-15:/# dig @10.53.0.3 ns.cs-202-15.lab A +norec
+
+; <<>> DiG 9.18.39-0ubuntu0.24.04.8-Ubuntu <<>> @10.53.0.3 ns.cs-202-15.lab A +norec
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 8587
+;; flags: qr; QUERY: 1, ANSWER: 0, AUTHORITY: 1, ADDITIONAL: 2
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: 83c1d5152751be91010000006ae5f34a49d066e9d0a937ef (good)
+;; QUESTION SECTION:
+;ns.cs-202-15.lab.              IN      A
+
+;; AUTHORITY SECTION:
+cs-202-15.lab.          3600    IN      NS      ns.cs-202-15.lab.
+
+;; ADDITIONAL SECTION:
+ns.cs-202-15.lab.       3600    IN      A       10.53.1.1
+
+;; Query time: 79 msec
+;; SERVER: 10.53.0.3#53(10.53.0.3) (UDP)
+;; WHEN: Sat Oct 31 13:55:22 UTC 2026
+;; MSG SIZE  rcvd: 103
+
+root@ns-cs-202-15:/# dig @10.53.1.1 ns.cs-202-15.lab A +norec
+
+; <<>> DiG 9.18.39-0ubuntu0.24.04.8-Ubuntu <<>> @10.53.1.1 ns.cs-202-15.lab A +norec
+; (1 server found)
+;; global options: +cmd
+;; Got answer:
+;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 43599
+;; flags: qr aa; QUERY: 1, ANSWER: 1, AUTHORITY: 1, ADDITIONAL: 1
+
+;; OPT PSEUDOSECTION:
+; EDNS: version: 0, flags:; udp: 1232
+; COOKIE: 2657b05d651bfb71010000006ae5f35366ba31785ea3d219 (good)
+;; QUESTION SECTION:
+;ns.cs-202-15.lab.              IN      A
+
+;; ANSWER SECTION:
+ns.cs-202-15.lab.       45      IN      A       10.53.1.1
+
+;; AUTHORITY SECTION:
+cs-202-15.lab.          45      IN      NS      ns.cs-202-15.lab.
+
+;; Query time: 0 msec
+;; SERVER: 10.53.1.1#53(10.53.1.1) (UDP)
+;; WHEN: Sat Oct 31 13:55:31 UTC 2026
+;; MSG SIZE  rcvd: 103
+
 ```
 | Сервер | status | flags | ANSWER | AUTHORITY | ADDITIONAL |
 |---|---|---|---|---|---|
