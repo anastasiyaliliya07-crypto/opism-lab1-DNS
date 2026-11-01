@@ -53,14 +53,170 @@ URI 5 використовує схему `mailto:`. Відповідно до R
 
 ### 1.2. Перевірка (після завдання 3)
 <!-- Для URI 1–3: рядки запиту (починаються з ">") і тіло відповіді сервера. -->
-```text
+```
+root@ns-cs-202-15:/# curl -v 'http://www.cs-202-15.lab/media/archive?lang=83&limit=asc#section-2'
+* Host www.cs-202-15.lab:80 was resolved.
+* IPv6: (none)
+* IPv4: 10.53.0.80
+*   Trying 10.53.0.80:80...
+* Connected to www.cs-202-15.lab (10.53.0.80) port 80
+> GET /media/archive?lang=83&limit=asc HTTP/1.1
+> Host: www.cs-202-15.lab
+> User-Agent: curl/8.5.0
+> Accept: */*
+> 
+< HTTP/1.1 200 OK
+< Server: nginx/1.24.0 (Ubuntu)
+< Date: Sun, 01 Nov 2026 14:09:20 GMT
+< Content-Type: text/plain
+< Content-Length: 148
+< Connection: keep-alive
+< 
+server: web-a
+Host: www.cs-202-15.lab
+request URI: /media/archive?lang=83&limit=asc
+path: /media/archive
+query: lang=83&limit=asc
+client: 10.53.1.1
+* Connection #0 to host www.cs-202-15.lab left intact
+
+root@ns-cs-202-15:/# curl -v 'http://wiki.cs-202-15.lab:80/archive/?lang=%D0%BA%D0%B8%D1%97%D%B2'
+* Host wiki.cs-202-15.lab:80 was resolved.
+* IPv6: (none)
+* IPv4: 10.53.0.80
+*   Trying 10.53.0.80:80...
+* Connected to wiki.cs-202-15.lab (10.53.0.80) port 80
+> GET /archive/?lang=%D0%BA%D0%B8%D1%97%D%B2 HTTP/1.1
+> Host: wiki.cs-202-15.lab
+> User-Agent: curl/8.5.0
+> Accept: */*
+> 
+< HTTP/1.1 200 OK
+< Server: nginx/1.24.0 (Ubuntu)
+< Date: Sun, 01 Nov 2026 14:09:30 GMT
+< Content-Type: text/plain
+< Content-Length: 161
+< Connection: keep-alive
+< 
+server: web-a
+Host: wiki.cs-202-15.lab
+request URI: /archive/?lang=%D0%BA%D0%B8%D1%97%D%B2
+path: /archive/
+query: lang=%D0%BA%D0%B8%D1%97%D%B2
+client: 10.53.1.1
+* Connection #0 to host wiki.cs-202-15.lab left intact
+
+root@ns-cs-202-15:/# curl -v 'http://user:pass@lab.cs-202-15.lab/media#results'
+* Host lab.cs-202-15.lab:80 was resolved.
+* IPv6: (none)
+* IPv4: 10.53.0.81
+*   Trying 10.53.0.81:80...
+* Connected to lab.cs-202-15.lab (10.53.0.81) port 80
+* Server auth using Basic with user 'user'
+> GET /media HTTP/1.1
+> Host: lab.cs-202-15.lab
+> Authorization: Basic dXNlcjpwYXNz
+> User-Agent: curl/8.5.0
+> Accept: */*
+> 
+< HTTP/1.1 200 OK
+< Server: nginx/1.24.0 (Ubuntu)
+< Date: Sun, 01 Nov 2026 14:09:41 GMT
+< Content-Type: text/plain
+< Content-Length: 97
+< Connection: keep-alive
+< 
+server: web-b
+Host: lab.cs-202-15.lab
+request URI: /media
+path: /media
+query: 
+client: 10.53.1.1
+* Connection #0 to host lab.cs-202-15.lab left intact
 ```
 Значення заголовка `Authorization` і результат декодування:
-```text
+```
+Authorization: Basic dXNlcjpwYXNz
+
+user:pass
 ```
 URI 4: етап, на якому запит не вдається (пошук імені / TCP / TLS), і рядки виводу, що це підтверджують:
-```text
 ```
+root@ns-cs-202-15:/# curl -v 'https://www.cs-202-15.lab:8443/media/../archive'
+* Host www.cs-202-15.lab:8443 was resolved.
+* IPv6: (none)
+* IPv4: 10.53.0.80
+*   Trying 10.53.0.80:8443...
+* connect to 10.53.0.80 port 8443 from 10.53.1.1 port 45262 failed: Connection refused
+* Failed to connect to www.cs-202-15.lab port 8443 after 1 ms: Couldn't connect to server
+* Closing connection
+curl: (7) Failed to connect to www.cs-202-15.lab port 8443 after 1 ms: Couldn't connect to server
+```
+Помилка сталася на етапі встановлення TCP-з'єднання (транспортний рівень), оскільки DNS-імя успішно знайшлося ('IPv4: 10.53.0.80'), але порт '8443' закритий.
+Рядки виводу, що це підтверджують:
+
+```
+*   Trying 10.53.0.80:8443...
+- connect to 10.53.0.80 port 8443 from 10.53.1.1 port 45262 failed: Connection refused
+- Failed to connect to www.cs-202-15.lab port 8443 after 1 ms: Couldn't connect to server
+```
+Перевірка шляхів:
+
+```
+root@ns-cs-202-15:/# curl -s -v 'http://www.cs-202-15.lab/media/../archive'
+* Host www.cs-202-15.lab:80 was resolved.
+* IPv6: (none)
+* IPv4: 10.53.0.80
+*   Trying 10.53.0.80:80...
+* Connected to www.cs-202-15.lab (10.53.0.80) port 80
+> GET /archive HTTP/1.1
+> Host: www.cs-202-15.lab
+> User-Agent: curl/8.5.0
+> Accept: */*
+> 
+< HTTP/1.1 200 OK
+< Server: nginx/1.24.0 (Ubuntu)
+< Date: Sun, 01 Nov 2026 14:28:10 GMT
+< Content-Type: text/plain
+< Content-Length: 101
+< Connection: keep-alive
+< 
+server: web-a
+Host: www.cs-202-15.lab
+request URI: /archive
+path: /archive
+query: 
+client: 10.53.1.1
+* Connection #0 to host www.cs-202-15.lab left intact
+
+root@ns-cs-202-15:/# curl -s -v --path-as-is 'http://www.cs-202-15.lab/media/../archive'
+* Host www.cs-202-15.lab:80 was resolved.
+* IPv6: (none)
+* IPv4: 10.53.0.80
+*   Trying 10.53.0.80:80...
+* Connected to www.cs-202-15.lab (10.53.0.80) port 80
+> GET /media/../archive HTTP/1.1
+> Host: www.cs-202-15.lab
+> User-Agent: curl/8.5.0
+> Accept: */*
+> 
+< HTTP/1.1 200 OK
+< Server: nginx/1.24.0 (Ubuntu)
+< Date: Sun, 01 Nov 2026 14:28:27 GMT
+< Content-Type: text/plain
+< Content-Length: 110
+< Connection: keep-alive
+< 
+server: web-a
+Host: www.cs-202-15.lab
+request URI: /media/../archive
+path: /archive
+query: 
+client: 10.53.1.1
+* Connection #0 to host www.cs-202-15.lab left intact
+```
+
+
 | Запит | `request URI`, отриманий сервером | `path`, отриманий сервером |
 |---|---|---|
 | звичайний | | |
