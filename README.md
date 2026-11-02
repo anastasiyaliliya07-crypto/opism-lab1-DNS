@@ -803,17 +803,37 @@ root@ns-cs-202-15:/# dig @10.53.1.1 new-unhxf.cs-202-15.lab +norec +short
 
 Вивід вимірювань:
 ```
+root@ns-cs-202-15:/# A=y$RANDOM.cs-202-15.lab; dig $A | grep 'Query time'; dig $A | grep 'Query time'
+;; Query time: 40 msec
+;; Query time: 0 msec
 
+root@ns-cs-202-15:/# B=x$RANDOM.lab; dig $B | grep 'Query time'; dig $B | grep 'Query time'
+;; Query time: 40 msec
+;; Query time: 1 msec
+
+root@ns-cs-202-15:/# C=x$RANDOM.zzrandom; dig $C | grep 'Query time'; dig $C | grep 'Query time'
+;; Query time: 90 msec
+;; Query time: 0 msec
+
+root@ns-cs-202-15:/# dig www.cs-202-15.lab | grep 'Query time'; dig www.cs-202-15.lab | grep 'Query time'
+;; Query time: 401 msec
+;; Query time: 0 msec
 ```
 | Ім'я | Перший запит, мс | Повторний, мс | Сервери, до яких звернувся резолвер (за журналами) |
 |---|---|---|---|
-| A | | | |
-| B | | | |
-| C | | | |
-| D | | | |
+| A |40 мс |0 мс |Власний авторитативний сервер (10.53.1.1) |
+| B |40 мс |1 мс |Кореневий (10.53.0.2), TLD-сервер (10.53.0.3) |
+| C |90 мс |0 мс |Кореневий сервер (10.53.0.2) |
+| D |401 мс |0 мс |Кореневий (10.53.0.2) $\rightarrow$ TLD (10.53.0.3) $\rightarrow$ Власний (10.53.1.1) |
+
 Значення `time_namelookup` з `curl` після перезапуску резолвера:
+```
+root@ns-cs-202-15:/# curl -so /dev/null -w '%{time_namelookup}\n' http://www.cs-202-15.lab/
+0.001780
+```
 Фрагменти журналів запитів root, TLD і власного сервера для рядка D:
-```text
+```
+
 ```
 1. Яку затримку вносить кожен із серверів root, TLD і власний сервер? Покажіть, з яких рядків таблиці це випливає.
 2. Чому в рядку A перший запит не проходить через root і TLD, хоча ім'я нове?
